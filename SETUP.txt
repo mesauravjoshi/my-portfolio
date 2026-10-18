@@ -1,0 +1,4 @@
+# Setup
+npm i next-themes
+# put these in /public: wallpaper.jpg (your design background), avatar.jpg (your photo), Saurav_Joshi_CV.pdf
+# delete the old app/desktop.tsx. Keep postcss config + `tailwindcss` from create-next-app.
