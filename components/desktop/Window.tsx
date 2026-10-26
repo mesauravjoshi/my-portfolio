@@ -36,7 +36,7 @@ function Light({ color, hover, label, icon, onClick, focused }: { color: string;
       onClick={onClick}
       aria-label={label}
       title={label}
-      className={`flex h-3 w-3 items-center justify-center rounded-full text-black/60 ring-1 ring-black/15 transition ${
+      className={`flex h-3.5 w-3.5 items-center justify-center rounded-full text-black/60 ring-1 ring-black/15 transition ${
         focused ? color : `bg-slate-500/40 ${hover}`
       }`}
     >

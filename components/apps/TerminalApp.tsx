@@ -86,7 +86,7 @@ export function TerminalApp({ actions }: { actions: AppActions }) {
           autoComplete="off"
           autoCapitalize="off"
           spellCheck={false}
-          className="min-w-0 flex-1 bg-transparent text-white outline-none"
+          className="min-w-0 flex-1 bg-transparent text-white caret-sky-300 outline-none focus:outline-none focus-visible:outline-none"
         />
       </form>
       <div ref={endRef} />

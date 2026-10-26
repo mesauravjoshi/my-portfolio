@@ -10,7 +10,7 @@ export const profile = {
   email: "sauravjoshi.work1@gmail.com",
   phone: "+91 8837594781",
   location: "Mohali, India",
-  github: "https://github.com/sauravjoshi", // ← replace with your real GitHub URL
+  github: "https://github.com/mesauravjoshi", // ← replace with your real GitHub URL
   linkedin: "https://linkedin.com/in/saurav-joshi-dev",
   cv: "/Saurav_Joshi_CV.pdf", // lives in /public
   avatar: "/avatar.jpg", // lives in /public

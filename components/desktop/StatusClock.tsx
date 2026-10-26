@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Icon } from "@/components/ui/Icon";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
-export function StatusClock() {
+export function StatusClock({ onToggleControls, controlsOpen }: { onToggleControls: () => void; controlsOpen: boolean }) {
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
-    // setNow(new Date());
+    setNow(new Date());
     const t = window.setInterval(() => setNow(new Date()), 15_000);
     return () => window.clearInterval(t);
   }, []);
@@ -24,7 +25,17 @@ export function StatusClock() {
         <p className="mt-1.5 min-h-4 text-xs text-white/85">{date}</p>
       </div>
       <span className="mt-0.5 h-9 w-px bg-white/25" />
-      <ThemeToggle className="-mt-0.5" />
+      <div className="-mt-0.5 flex items-center">
+        <ThemeToggle />
+        <button
+          onClick={onToggleControls}
+          aria-label="Quick settings"
+          aria-expanded={controlsOpen}
+          className={`rounded-lg p-2 transition hover:bg-white/10 ${controlsOpen ? "bg-white/15 text-white" : "text-indigo-200 hover:text-white"}`}
+        >
+          <Icon name="controls" className="h-5 w-5" />
+        </button>
+      </div>
     </div>
   );
 }
