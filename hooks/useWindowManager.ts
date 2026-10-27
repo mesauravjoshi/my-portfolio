@@ -17,7 +17,6 @@ type Interaction = {
 };
 
 export function useWindowManager() {
-  const zRef = useRef(10);
   const workspaceRef = useRef<HTMLDivElement | null>(null);
 
   const setWorkspace = useCallback((el: HTMLDivElement | null) => {
@@ -26,20 +25,22 @@ export function useWindowManager() {
 
   const interaction = useRef<Interaction | null>(null);
 
-  const create = useCallback((id: AppId): WindowState => {
+  const create = useCallback((id: AppId, zIndex: number): WindowState => {
     const geometry = appMeta[id].geometry;
-    return { id, geometry, restoreGeometry: geometry, zIndex: ++zRef.current, minimized: false, maximized: false };
+    return { id, geometry, restoreGeometry: geometry, zIndex, minimized: false, maximized: false };
   }, []);
 
-  const [windows, setWindows] = useState<WindowState[]>(() => initialOpen.map(create));
+  const [windows, setWindows] = useState<WindowState[]>(() => initialOpen.map((id, index) => create(id, 11 + index)));
 
   const topZ = (list: WindowState[]) => Math.max(0, ...list.filter((w) => !w.minimized).map((w) => w.zIndex));
+  const nextZ = (list: WindowState[]) => Math.max(10, ...list.map((w) => w.zIndex)) + 1;
 
   const focus = useCallback((id: AppId) => {
     setWindows((list) => {
       const target = list.find((w) => w.id === id);
       if (target && !target.minimized && target.zIndex === topZ(list)) return list;
-      return list.map((w) => (w.id === id ? { ...w, minimized: false, zIndex: ++zRef.current } : w));
+      const zIndex = nextZ(list);
+      return list.map((w) => (w.id === id ? { ...w, minimized: false, zIndex } : w));
     });
   }, []);
 
@@ -48,8 +49,8 @@ export function useWindowManager() {
     (id: AppId) => {
       setWindows((list) =>
         list.some((w) => w.id === id)
-          ? list.map((w) => (w.id === id ? { ...w, minimized: false, zIndex: ++zRef.current } : w))
-          : [...list, create(id)],
+          ? list.map((w) => (w.id === id ? { ...w, minimized: false, zIndex: nextZ(list) } : w))
+          : [...list, create(id, nextZ(list))],
       );
     },
     [create],
@@ -60,9 +61,10 @@ export function useWindowManager() {
     (id: AppId) => {
       setWindows((list) => {
         const w = list.find((x) => x.id === id);
-        if (!w) return [...list, create(id)];
+        if (!w) return [...list, create(id, nextZ(list))];
         if (!w.minimized && w.zIndex === topZ(list)) return list.map((x) => (x.id === id ? { ...x, minimized: true } : x));
-        return list.map((x) => (x.id === id ? { ...x, minimized: false, zIndex: ++zRef.current } : x));
+        const zIndex = nextZ(list);
+        return list.map((x) => (x.id === id ? { ...x, minimized: false, zIndex } : x));
       });
     },
     [create],
@@ -78,7 +80,7 @@ export function useWindowManager() {
         const next = !w.maximized;
         return {
           ...w,
-          zIndex: ++zRef.current,
+          zIndex: nextZ(l),
           maximized: next,
           restoreGeometry: next ? w.geometry : w.restoreGeometry,
           geometry: next ? MAXIMIZED : w.restoreGeometry,
@@ -150,5 +152,5 @@ export function useWindowManager() {
     };
   }, []);
 
-  return { windows, setWorkspace,workspaceRef, open, close, minimize, focus, toggleMaximize, toggleFromDock, begin, topZ: topZ(windows) };
+  return { windows, setWorkspace, open, close, minimize, focus, toggleMaximize, toggleFromDock, begin, topZ: topZ(windows) };
 }

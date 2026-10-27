@@ -36,11 +36,10 @@ body { margin: 0; overflow: hidden; font-family: var(--font-sans); -webkit-font-
 .wallpaper {
   background-color: #02152d;
   background-image:
-    url("https://4kwallpapers.com/images/walls/thumbs_2t/189.jpg"),
+    url("/wallpaper.jpg"),
     radial-gradient(60% 28% at 88% 25%, rgb(229 151 148 / 0.75), transparent 70%),
     radial-gradient(45% 22% at 100% 18%, rgb(121 98 134 / 0.8), transparent 70%),
-    radial-gradient(70% 18% at 15% 40%, rgb(47 52 82 / 0.9), transparent 70%),
-    linear-gradient(180deg, #011329 0%, #0b1e3a 28%, #162847 42%, #060f1f 56%, #00040c 72%, #08141f 88%, #000304 100%);
+    radial-gradient(70% 18% at 15% 40%, rgb(47 52 82 / 0.9), transparent 70%);
   background-size: cover;
   background-position: center;
 }

@@ -16,7 +16,7 @@ export function DesktopIcons({ onOpen }: { onOpen: (id: AppId) => void }) {
           }}
           onKeyDown={(e) => e.key === "Enter" && onOpen(id)}
           aria-label={`Open ${appMeta[id].label}`}
-          className="group flex w-18 flex-col items-center gap-1.5 rounded-xl p-1.5 text-xs text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] transition hover:bg-white/10"
+          className="group flex w-18 flex-col items-center gap-1.5 rounded-xl p-1.5 text-xs text-white transition hover:bg-white/10"
         >
           <AppIcon id={id} size="lg" />
           {appMeta[id].label}

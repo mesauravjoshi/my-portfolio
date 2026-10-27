@@ -57,7 +57,7 @@ export function AboutApp({ actions }: { actions: AppActions }) {
             <p className="text-[11px] font-medium uppercase tracking-[0.18em] muted">Hello, I&apos;m</p>
             <h1 className="mt-2 flex items-center gap-3 text-3xl font-bold tracking-tight heading sm:text-4xl">
               {profile.name}
-              <span title="Available for work" className="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_2px_rgba(52,211,153,0.7)]" />
+              {/* <span title="Available for work" className="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_2px_rgba(52,211,153,0.7)]" /> */}
             </h1>
             <p className="mt-2 text-lg font-semibold text-slate-700 dark:text-slate-100">{profile.role}</p>
             <p className="mt-4 max-w-md text-[13px] leading-relaxed muted">{profile.bio}</p>

@@ -1,15 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
+const subscribeToClock = (onTick: () => void) => {
+  const interval = window.setInterval(onTick, 15_000);
+  return () => window.clearInterval(interval);
+};
+const getClockSnapshot = () => Math.floor(Date.now() / 15_000);
+const getClockServerSnapshot = () => null;
+
 export function StatusClock({ onToggleControls, controlsOpen }: { onToggleControls: () => void; controlsOpen: boolean }) {
-  const [now, setNow] = useState<Date | null>(null);
-  useEffect(() => {
-    setNow(new Date());
-    const t = window.setInterval(() => setNow(new Date()), 15_000);
-    return () => window.clearInterval(t);
-  }, []);
+  const clockTick = useSyncExternalStore(subscribeToClock, getClockSnapshot, getClockServerSnapshot);
+  const now = clockTick === null ? null : new Date(clockTick * 15_000);
 
   const time = now?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true }) ?? "";
   const [clock, meridiem] = time.split(/\s+/);

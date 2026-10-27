@@ -1,17 +1,26 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
+
+const subscribeToFullscreen = (onChange: () => void) => {
+  document.addEventListener("fullscreenchange", onChange);
+  return () => document.removeEventListener("fullscreenchange", onChange);
+};
+const subscribeToFullscreenSupport = () => () => {};
+const getFullscreenSnapshot = () => !!document.fullscreenElement;
+const getFullscreenSupportSnapshot = () => !!document.fullscreenEnabled;
+const getFullscreenServerSnapshot = () => false;
 
 export function useFullscreen() {
-  const [active, setActive] = useState(false);
-  const [supported, setSupported] = useState(true);
-
-  useEffect(() => {
-    setSupported(!!document.fullscreenEnabled);
-    const sync = () => setActive(!!document.fullscreenElement);
-    sync();
-    document.addEventListener("fullscreenchange", sync);
-    return () => document.removeEventListener("fullscreenchange", sync);
-  }, []);
+  const active = useSyncExternalStore(
+    subscribeToFullscreen,
+    getFullscreenSnapshot,
+    getFullscreenServerSnapshot,
+  );
+  const supported = useSyncExternalStore(
+    subscribeToFullscreenSupport,
+    getFullscreenSupportSnapshot,
+    getFullscreenServerSnapshot,
+  );
 
   const toggle = useCallback(async () => {
     try {
